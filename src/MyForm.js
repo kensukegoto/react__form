@@ -18,10 +18,12 @@ class MyForm extends Component {
     const {
       input, // {value:"",onChange:f(event),...}
       label,
-      type
+      type,
+      test = ""
     } = field
+    const {name} = {...input};
     return (
-        <input {...input} placeholder={label} type={type} />
+        <input {...input} placeholder={label} type={type} name={test} />
     )
   }
 
@@ -55,20 +57,24 @@ class MyForm extends Component {
       <div>
         <ul>
           {
-            fields.map((comment,key) => {
+            fields.map((comment,index) => {
+              console.log(comment)
             return (
-              <li key={key}>
+              <li key={index}>
                 <Field 
                   label="コメント" 
-                  name={`li_${key}`} 
+                  name={`${comment}`}
                   type="text" 
                   component={this.renderField} 
                 />
+                <button type="button" onClick={()=> {
+                  return fields.remove(index)} 
+                }>削除</button>
               </li>
             )
           })}
         </ul>
-        <button type="button" onClick={()=> fields.push({})}>追加</button>
+        <button type="button" onClick={()=> fields.push()}>追加</button>
       </div>
     )
   }
@@ -76,10 +82,13 @@ class MyForm extends Component {
     const params = new FormData()
     params.append('h4', values.h4)
     params.append('tmb', values.tmb)
-    for(let key in values){
-      if(/li_\d+/.test(key)){
-        params.append(key,values[key])
-      }
+
+    if(values.ul){
+      values.ul.forEach((e,i) => {
+        if(e) {
+          params.append(`li_${i}`,e)
+        }
+      });
     }
 
     await this.props.createEvent(params)
