@@ -1,10 +1,45 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+
+import {
+  createStore,
+  applyMiddleware
+} from 'redux'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
+import {
+  BrowserRouter,
+  Switch,
+  Route
+} from 'react-router-dom'
+import { composeWithDevTools } from 'redux-devtools-extension'
+
+import reducer from './reducers'
+
+import MyForm from './MyForm';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// 増強
+const enhancer = process.env.NODE_ENV === "development" ? 
+  composeWithDevTools(applyMiddleware(thunk)) : applyMiddleware(thunk);
+
+/**
+ * actionをthunk化
+ * recuderと結びつけて状態をstoreで管理
+ */
+const store = createStore(reducer,enhancer)
+
+ReactDOM.render(
+  <Provider store={store}>
+    <BrowserRouter>
+    <Switch>
+      <Route path="/form" component={MyForm}/>
+    </Switch>
+    </BrowserRouter>
+  </Provider>
+  , document.getElementById('root')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
