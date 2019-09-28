@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Field,reduxForm } from 'redux-form'
+import { Field,FieldArray,reduxForm } from 'redux-form'
 
 import {
   createEvent
@@ -11,8 +11,8 @@ class MyForm extends Component {
   constructor(props){
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
+    this.renderComments = this.renderComments.bind(this)
   }
-
 
   renderField(field){
     const {
@@ -21,9 +21,7 @@ class MyForm extends Component {
       type
     } = field
     return (
-      <div>
         <input {...input} placeholder={label} type={type} />
-      </div>
     )
   }
 
@@ -42,7 +40,6 @@ class MyForm extends Component {
             e.preventDefault()
             onChange(e.target.files[0])
             onFieldChange && onFieldChange(e.target.files[0])
-            // onChange(e.ta)
           }}
         />
       </div>
@@ -50,11 +47,41 @@ class MyForm extends Component {
 
   }
 
+  renderComments({
+    label,
+    fields
+  }){
+    return (
+      <div>
+        <ul>
+          {
+            fields.map((comment,key) => {
+            return (
+              <li key={key}>
+                <Field 
+                  label="コメント" 
+                  name={`li_${key}`} 
+                  type="text" 
+                  component={this.renderField} 
+                />
+              </li>
+            )
+          })}
+        </ul>
+        <button type="button" onClick={()=> fields.push({})}>追加</button>
+      </div>
+    )
+  }
   async onSubmit(values){
     const params = new FormData()
     params.append('h4', values.h4)
     params.append('tmb', values.tmb)
-    console.log(params)
+    for(let key in values){
+      if(/li_\d+/.test(key)){
+        params.append(key,values[key])
+      }
+    }
+
     await this.props.createEvent(params)
   }
   
@@ -76,6 +103,13 @@ class MyForm extends Component {
             name="tmb" 
             type="file" 
             component={this.renderUpfile} 
+          />
+        </div>
+        <div>
+          <FieldArray
+            name="ul"
+            label="コメント"
+            component={this.renderComments}
           />
         </div>
         <div>
