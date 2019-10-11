@@ -1,3 +1,7 @@
+# actionとreducer
+
+actionで状態の変更、reducerで状態を管理する
+
 # api call
 
 - h4
