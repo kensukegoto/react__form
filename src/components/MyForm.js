@@ -4,7 +4,7 @@ import { Field,FieldArray,reduxForm } from 'redux-form'
 
 import {
   createEvent
-} from './actions'
+} from '../actions'
 
 class MyForm extends Component {
 

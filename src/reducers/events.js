@@ -14,7 +14,8 @@ export default (
   ) => { 
 
     switch(action.type){
-
+      case READ_EVENTS:
+        return action.response.data.items;
       default:
         return events
     }

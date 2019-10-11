@@ -19,3 +19,12 @@ export const createEvent = values => async dispatch => {
     },
   })
 }
+
+export const readEvents = () => async dispatch => {
+  const response = await axios.get(`${ROOT_URL}/get`)
+  dispatch({
+    type: READ_EVENTS,
+    response
+  })
+
+}

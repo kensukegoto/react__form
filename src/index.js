@@ -17,7 +17,8 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 import reducer from './reducers'
 
-import MyForm from './MyForm';
+import MyList from './components/MyList';
+import MyForm from './components/MyForm';
 import * as serviceWorker from './serviceWorker';
 
 // 増強
@@ -34,6 +35,7 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
     <Switch>
+      <Route path="/" component={MyList}/>
       <Route path="/form" component={MyForm}/>
     </Switch>
     </BrowserRouter>
