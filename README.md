@@ -1,3 +1,16 @@
+# コンテナのライフサイクル
+
+- componentDidMount()
+  - Ajaxを使ったデータフェッチ（初回・２回目以降はcomponentDidUpdate）
+  - イベントリスナーのセット（解除はcomponentWillUnmount）
+- componentDidUpdate()
+  - propsまたはstateが変更された際に実行される
+  - stateの内容に応じて再度Ajaxを行うなど
+- componentWillUnmount()
+  - タイマーの解除
+  - イベントリスナを解除
+  - 非同期処理を中止する
+  
 # actionとreducer
 
 actionで状態の変更、reducerで状態を管理する
